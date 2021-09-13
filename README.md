@@ -1,3 +1,7 @@
+# App that authenticates users through super tokens
+
+Live app can be found at https://productivity-demo-client01.netlify.app
+
 ## Major issues
 
 Sign out doesn't always work. After testing my app with supertokens after a while, it would something not sign out when I call its dedicated signOut function
