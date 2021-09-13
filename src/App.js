@@ -17,7 +17,7 @@ import isDeployed from './utilities/isDeployed';
 
 Session.addAxiosInterceptors(axios);
 const WEBSITE_DOMAIN = isDeployed()
-   ? 'http://productivity-demo-client01.netlify.app'
+   ? 'https://productivity-demo-client01.netlify.app'
    : 'http://localhost:3000';
 const API_WEBSITE_DOMAIN = isDeployed()
    ? 'https://productivity-server-demo01.herokuapp.com'
