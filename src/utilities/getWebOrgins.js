@@ -1,6 +1,6 @@
 import isDeployed from './isDeployed';
 
-return {
+export default {
    WEBSITE_DOMAIN: isDeployed()
       ? 'https://productivity-demo-client01.netlify.app'
       : 'http://localhost:3000',
