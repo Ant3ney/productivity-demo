@@ -61,7 +61,9 @@ class App extends React.Component {
                      </ThirdPartyEmailPasswordAuth>
                   </Route>
                   <Route path='/'>
-                     <LandingPage />
+                     <ThirdPartyEmailPasswordAuth>
+                        <LandingPage />
+                     </ThirdPartyEmailPasswordAuth>
                   </Route>
                </Switch>
             </Router>

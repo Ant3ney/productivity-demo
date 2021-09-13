@@ -28,7 +28,7 @@ export default function LandingPage() {
                      border: '1px solid gray',
                   }}
                >
-                  <Link className='action' to='/auth'>
+                  <Link className='action' to='/productivity'>
                      Get Started
                   </Link>
                </Button>

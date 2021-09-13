@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { signOut } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import Session, {
    useSessionContext,
 } from 'supertokens-auth-react/recipe/session';
@@ -7,6 +6,7 @@ import axios from 'axios';
 import Dashbord from './Material/Dashboard';
 import { Box, Typography, Button, CircularProgress } from '@material-ui/core';
 import getWebOrgins from '../utilities/getWebOrgins';
+import { signOut } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 
 Session.addAxiosInterceptors(axios);
 
@@ -15,7 +15,7 @@ export default function UserData() {
    let [userEmail, setUserEmail] = useState('Loading Email');
    let [productivitySave, setProductivitySave] = useState('Loading');
    let [initingProductivityLevel, setInitingProductivityLevel] = useState(0);
-   const { API_WEBSITE_DOMAIN } = getWebOrgins;
+   const { API_WEBSITE_DOMAIN, WEBSITE_DOMAIN } = getWebOrgins;
 
    useEffect(() => {
       getInitialProductivity();
@@ -24,8 +24,14 @@ export default function UserData() {
 
    useEffect(() => {
       if (initingProductivityLevel === 2) {
-         setProductivitySave('Updating Server');
-         setServerProductivity();
+         setProductivitySave('Changes Detected');
+         let scedualUpdateRefrence = setTimeout(() => {
+            setProductivitySave('Updating Server');
+            setServerProductivity();
+         }, 2000);
+         return () => {
+            clearTimeout(scedualUpdateRefrence);
+         };
       } else if (initingProductivityLevel === 1) {
          setProductivitySave('Saved');
       }
@@ -37,7 +43,9 @@ export default function UserData() {
    console.log(useSessionContext());
 
    function ProductivitySaveDisplay() {
-      if (productivitySave === 'Loading') {
+      if (productivitySave === 'Updating Server') {
+         return <CircularProgress style={{ margin: 'auto' }} />;
+      } else if (productivitySave === 'Loading') {
          return <CircularProgress style={{ margin: 'auto' }} />;
       } else {
          return <></>;
@@ -90,8 +98,19 @@ export default function UserData() {
          </Box>
          <Box mt={2} mx={4}>
             <Button
-               onClick={() => {
-                  signOut();
+               onClick={async () => {
+                  await signOut();
+                  /*  removeCookies();
+                  function removeCookies() {
+                     cookies.remove({
+                        name: 'sFrontToken',
+                        url: WEBSITE_DOMAIN,
+                     });
+                     window.cookies.remove({
+                        name: 'sFrontToken',
+                        url: WEBSITE_DOMAIN,
+                     });
+                  } */
                   window.location.href = '/';
                }}
                style={{
