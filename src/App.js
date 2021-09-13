@@ -16,7 +16,7 @@ import Navbar from './components/Navbar';
 import getWebOrgins from './utilities/getWebOrgins';
 
 Session.addAxiosInterceptors(axios);
-const { WEBSITE_DOMAIN, API_WEBSITE_DOMAIN } = getWebOrgins();
+const { WEBSITE_DOMAIN, API_WEBSITE_DOMAIN } = getWebOrgins;
 /* let user = await ThirdPartyEmailPassword.getUserById(userId); */
 SuperTokens.init({
    appInfo: {

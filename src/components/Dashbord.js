@@ -15,7 +15,7 @@ export default function UserData() {
    let [userEmail, setUserEmail] = useState('Loading Email');
    let [productivitySave, setProductivitySave] = useState('Loading');
    let [initingProductivityLevel, setInitingProductivityLevel] = useState(0);
-   const { API_WEBSITE_DOMAIN } = getWebOrgins();
+   const { API_WEBSITE_DOMAIN } = getWebOrgins;
 
    useEffect(() => {
       getInitialProductivity();
