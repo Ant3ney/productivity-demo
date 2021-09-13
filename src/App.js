@@ -16,14 +16,19 @@ import Navbar from './components/Navbar';
 import isDeployed from './utilities/isDeployed';
 
 Session.addAxiosInterceptors(axios);
-/* const WEBSITE_DOMAIN = isDeployed()  */
+const WEBSITE_DOMAIN = isDeployed()
+   ? 'productivity-demo-client01.netlify.app'
+   : 'http://localhost:3000';
+const API_WEBSITE_DOMAIN = isDeployed()
+   ? 'https://productivity-server-demo01.herokuapp.com'
+   : 'http://localhost:3005';
 /* let user = await ThirdPartyEmailPassword.getUserById(userId); */
 SuperTokens.init({
    appInfo: {
       // learn more about this on https://supertokens.io/docs/thirdpartyemailpassword/appinfo
       appName: 'Productivity Enhance', // Example: "SuperTokens",
-      apiDomain: 'http://localhost:3005', // Example: "https://api.supertokens.io",
-      websiteDomain: 'http://localhost:3000', // Example: "https://supertokens.io"
+      apiDomain: API_WEBSITE_DOMAIN, // Example: "https://api.supertokens.io",
+      websiteDomain: WEBSITE_DOMAIN, // Example: "https://supertokens.io"
    },
    recipeList: [
       ThirdPartyEmailPassword.init({
@@ -36,7 +41,9 @@ SuperTokens.init({
    ],
 });
 
-console.log(ThirdPartyEmailPassword());
+console.log(
+   `Website domain details\nWebsite Domain: ${WEBSITE_DOMAIN}\nAPI Website Domain: ${API_WEBSITE_DOMAIN}`
+);
 
 class App extends React.Component {
    constructor(props) {
