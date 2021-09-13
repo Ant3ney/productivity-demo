@@ -114,11 +114,6 @@ app.get('/productivity', verifySession(), (req, res) => {
 
 app.use(errorHandler());
 
-app.use((req, res, next) => {
-   console.log('here');
-   next();
-});
-
 app.listen(process.env.PORT, () => {
    let DELETE_ALL_USERS = false;
    console.log(`App is running on port: ${process.env.PORT}`);
