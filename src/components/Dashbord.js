@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { signOut } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
-import { ThirdPartyEmailPasswordAuth } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 import Session, {
    useSessionContext,
 } from 'supertokens-auth-react/recipe/session';
 import axios from 'axios';
 import Dashbord from './Material/Dashboard';
 import { Box, Typography, Button, CircularProgress } from '@material-ui/core';
+import getWebOrgins from '../utilities/getWebOrgins';
 
 Session.addAxiosInterceptors(axios);
 
@@ -15,6 +15,7 @@ export default function UserData() {
    let [userEmail, setUserEmail] = useState('Loading Email');
    let [productivitySave, setProductivitySave] = useState('Loading');
    let [initingProductivityLevel, setInitingProductivityLevel] = useState(0);
+   const { API_WEBSITE_DOMAIN } = getWebOrgins();
 
    useEffect(() => {
       getInitialProductivity();
@@ -123,19 +124,19 @@ export default function UserData() {
 
    async function getInitialProductivity() {
       // use axios as you normally do
-      let response = await axios.get('http://localhost:3005/productivity');
+      let response = await axios.get(`${API_WEBSITE_DOMAIN}/productivity`);
       let productivity = await response.data.productivity;
       setProductivity(productivity);
    }
    async function getUserEmail() {
-      let response = await axios.get('http://localhost:3005/getemail');
+      let response = await axios.get(`${API_WEBSITE_DOMAIN}/getemail`);
       let email = response.data;
       setUserEmail(email);
       return email;
    }
 
    async function setServerProductivity() {
-      let response = await axios.post('http://localhost:3005/setProductivity', {
+      let response = await axios.post(`${API_WEBSITE_DOMAIN}/setProductivity`, {
          newProductivity: productivity,
       });
 

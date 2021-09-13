@@ -13,15 +13,10 @@ import UserData from './components/Dashbord';
 import React, { useState, useEffect } from 'react';
 import LandingPage from './Pages/Landing';
 import Navbar from './components/Navbar';
-import isDeployed from './utilities/isDeployed';
+import getWebOrgins from './utilities/getWebOrgins';
 
 Session.addAxiosInterceptors(axios);
-const WEBSITE_DOMAIN = isDeployed()
-   ? 'https://productivity-demo-client01.netlify.app'
-   : 'http://localhost:3000';
-const API_WEBSITE_DOMAIN = isDeployed()
-   ? 'https://productivity-server-demo01.herokuapp.com'
-   : 'http://localhost:3005';
+const { WEBSITE_DOMAIN, API_WEBSITE_DOMAIN } = getWebOrgins();
 /* let user = await ThirdPartyEmailPassword.getUserById(userId); */
 SuperTokens.init({
    appInfo: {
