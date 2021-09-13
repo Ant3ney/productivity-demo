@@ -1,4 +1,4 @@
-# App that authenticates users through super tokens
+# App that authenticates users through SuperTokens
 
 Live app can be found at https://productivity-demo-client01.netlify.app
 
