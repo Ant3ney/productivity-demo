@@ -28,8 +28,8 @@ supertokens.init({
    appInfo: {
       // learn more about this on https://supertokens.io/docs/thirdpartyemailpassword/appinfo
       appName: 'ProductivityEnhance', // Example: "SuperTokens",
-      apiDomain: 'http://localhost:3005', // Example: "https://api.supertokens.io",
-      websiteDomain: 'http://localhost:3000', // Example: "https://supertokens.io"
+      apiDomain: process.env.SERVER_ORGIN, // Example: "https://api.supertokens.io",
+      websiteDomain: process.env.CLIENT_ORGIN, // Example: "https://supertokens.io"
    },
    recipeList: [
       ThirdPartyEmailPassword.init({
@@ -46,7 +46,7 @@ supertokens.init({
 
 app.use(
    cors({
-      origin: 'http://localhost:3000',
+      origin: process.env.CLIENT_ORGIN,
       allowedHeaders: [
          'Access-Control-Allow-Origin',
          'content-type',
