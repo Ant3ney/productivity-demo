@@ -1,30 +1,21 @@
-# App that authenticates users through SuperTokens
+# Auth0 Productivity App
 
 Live app can be found at https://productivity-demo-client01.netlify.app
 
 ## Major issues
 
-Sign out doesn't always work. After testing my app with supertokens after a while, it would something not sign out when I call its dedicated signOut function
-In order to fix this, I would have to go into the browser dev tools and remove cookies associated with supertokens
-
-The docs don't make it advous how to get user data. I wasted a lot of time thinking I had missed something and did a lot of unnecessary searching.
+Inside the Auth0 docs on getting started with authentication via a react app, I did not find any mention of how to persist user authentication and the users data after refreshes. (local session would not store)
 
 ## Notes decisions and feedback
 
-I appreciate having the option between self hosting and Sass
+I Liked being able to customize the consent screen
 
-I wished that after choosing Sass or self hosting I was directed to documentation
+It was tough to get login with redirect to work
 
-I like the choice you get from recipes
+I could not figure out how to keep the user data object from the useAuth hook to stay defined. When I refreshed the user data, it would not disappear until I logged in again.
 
-I found the docs useful on the topics it talked about
+To fix the above issue, I had to set cacheLocation = 'localstorage' for the Auth0Provider to save user data after refresh. This was not well documented.
 
-The system for setting up react router seems clunky
+Found it very convenient to have an option where I don’t have to use my google client id and secret.
 
-I immediately noticed how useful this code can be
-
-Part way through testing by backend I had to add Access-Control-Allow-Origin” to the allowed headers
-
-I Felt lost on how to actually get user data
-
-Signout failed to work a lot of the time.
+I Appreciated being able to set my redirect url after logging out.
