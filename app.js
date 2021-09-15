@@ -10,10 +10,7 @@ require('dotenv').config();
 app.use(
    cors({
       origin: process.env.CLIENT_ORGIN,
-      allowedHeaders: [
-         'Access-Control-Allow-Origin',
-         'content-type'
-      ],
+      allowedHeaders: ['Access-Control-Allow-Origin', 'content-type'],
       credentials: true,
    })
 );
@@ -25,11 +22,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/like-comment', (req, res) => {
-   res.status(500).json({message: 'route not set up yet'});
+   res.status(500).json({ message: 'route not set up yet' });
 });
 
 app.get('/getemail', async (req, res) => {
-   res.status(500).json({message: 'route not set up yet'});
+   res.status(500).json({ message: 'route not set up yet' });
 
    /* let userId = req.session.getUserId();
    let user = await ThirdPartyEmailPassword.getUserById(userId);
@@ -37,43 +34,39 @@ app.get('/getemail', async (req, res) => {
    res.status(200).json(email); */
 });
 
-app.post('/setProductivity', async (req, res) => {
-   res.status(500).json({message: 'route not set up yet'});
-   
-   /* let userId = req.session.getUserId();
-   let newProductivity = req.body.newProductivity;
-   console.log(newProductivity);
-   User.findOneAndUpdate({ uid: userId }, { productivity: newProductivity })
-      .then(user => {
-         res.status(200).json(true);
-      })
-      .catch(err => {
-         console.error(err);
-         res.status(500).json(false);
-      }); */
-});
+app.post('/user', (req, res) => {
+   let uid = req.body.token;
 
-app.get('/productivity', (req, res) => {
-   res.status(500).json({message: 'route not set up yet'});
-   
-   /* let uid = req.session.getUserId();
    User.findOne({ uid: uid })
       .then(user => {
          console.log('User found');
+         console.log(`Finding user route ${uid}`);
+         console.log(user);
          res.status(200).json({ productivity: user.productivity });
       })
       .catch(err => {
          console.error('User not found');
          User.create({ uid: uid, productivity: 0 })
-            .then(() => {
-               res.status(200).json(0);
+            .then(user => {
+               res.status(200).json(user);
             })
             .catch(err => {
                console.error('Something went wrong');
                console.error(err);
                res.status(500).json(err);
             });
-      }); */
+      });
+});
+
+app.post('/setProductivity', (req, res) => {
+   let { token, newProductivity } = req.body;
+   User.findOneAndUpdate({ uid: token }, { productivity: newProductivity })
+      .then(user => {
+         res.status(200).json(true);
+      })
+      .catch(err => {
+         res.status(500).json(err);
+      });
 });
 
 console.log(
