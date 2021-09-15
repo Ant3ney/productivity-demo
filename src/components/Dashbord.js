@@ -4,15 +4,13 @@ import Dashbord from './Material/Dashboard';
 import { Box, Typography, Button, CircularProgress } from '@material-ui/core';
 import getWebOrgins from '../utilities/getWebOrgins';
 import { useAuth0 } from '@auth0/auth0-react';
-import createAuth0Client from '@auth0/auth0-spa-js';
 
 export default function UserData() {
    let [productivity, setProductivity] = useState(null);
    let [productivitySave, setProductivitySave] = useState('Loading');
    const [userMetadata, setUserMetadata] = useState(null);
 
-   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
-      useAuth0();
+   const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
    const { API_WEBSITE_DOMAIN, WEBSITE_DOMAIN } = getWebOrgins;
 
@@ -131,8 +129,8 @@ export default function UserData() {
          </Box>
          <Box mt={2} mx={4}>
             <Button
-               onClick={async () => {
-                  window.location.href = '/';
+               onClick={() => {
+                  logout({ returnTo: window.location.origin });
                }}
                style={{
                   margin: 'auto',

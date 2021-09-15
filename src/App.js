@@ -28,7 +28,7 @@ class App extends React.Component {
                <Auth0Provider
                   domain='dev-zguv3jce.us.auth0.com'
                   clientId='gDDLWZceYHP8vybczEOEaIQDArPlYQC0'
-                  redirectUri={`${WEBSITE_DOMAIN}/callback`}
+                  redirectUri={`${WEBSITE_DOMAIN}/productivity`}
                   cacheLocation='localstorage'
                >
                   <Navbar />
