@@ -4,60 +4,82 @@ import Dashbord from './Material/Dashboard';
 import { Box, Typography, Button, CircularProgress } from '@material-ui/core';
 import getWebOrgins from '../utilities/getWebOrgins';
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-   BrowserRouter as Router,
-   Switch,
-   Route,
-   Link,
-   Redirect,
-} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import App from '../App';
 
 export default function UserData() {
    let [productivity, setProductivity] = useState(null);
    let [productivitySave, setProductivitySave] = useState('Loading');
-   const [userMetadata, setUserMetadata] = useState(null);
+   let [projectStage, setProjectStage] = useState('awake');
+   let [userToken, setUserToken] = useState(null);
+   let [runOnce, setRunOnce] = useState(true);
+   let [getProductivityLoading, setGetProductivityLoading] = useState(true);
 
    const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
    const { API_WEBSITE_DOMAIN, WEBSITE_DOMAIN } = getWebOrgins;
 
-   console.log(useAuth0());
-
    useEffect(async () => {
-      // either with async/await
-      /* createAuth0Client({
-         domain: 'dev-zguv3jce.us.auth0.com',
-         client_id: 'gDDLWZceYHP8vybczEOEaIQDArPlYQC0',
-      })
-         .then(auth0 => {
-            console.log(`auth0 below`);
-            console.log(auth0);
-         })
-         .catch(err => {
-            alert('Failed');
-            console.error(err);
-         }); */
-   }, []);
+      if (isAuthenticated && user && userToken && runOnce) {
+         setRunOnce(false);
+
+         console.log(user);
+         axios
+            .post(`${API_WEBSITE_DOMAIN}/user`, {
+               token: user.sub,
+            })
+            .then(retUser => {
+               console.log('Fetch worked');
+               console.log(retUser);
+               if (!retUser || !retUser.data) {
+                  Promise.reject({ message: 'No data came back' });
+               }
+               setProductivity(retUser.data.productivity);
+               setGetProductivityLoading(false);
+               setProductivitySave('Server is up to date');
+            })
+            .catch(err => {
+               console.error('get user via post failed');
+               console.error(err);
+            });
+      }
+   }, [isAuthenticated, user, userToken]);
+
+   useEffect(() => {
+      if (
+         productivitySave === 'Server is up to date' ||
+         productivitySave === 'Changes detected'
+      ) {
+         setProductivitySave('Changes detected');
+
+         let scedualUpdateRefrence = setTimeout(() => {
+            setProductivitySave('Updating Server');
+            axios
+               .post(`${API_WEBSITE_DOMAIN}/setProductivity`, {
+                  token: user.sub,
+                  newProductivity: productivity,
+               })
+               .then(confermation => {
+                  setProductivitySave('Server is up to date');
+               })
+               .catch(err => {
+                  console.error('get user via post failed');
+                  console.error(err);
+               });
+         }, 2000);
+         return () => {
+            clearTimeout(scedualUpdateRefrence);
+         };
+      }
+   }, [productivity]);
 
    useAuth0()
       .getAccessTokenSilently()
       .then(res => {
-         console.log(`Token: ${res}`);
+         setUserToken(res);
       })
       .catch(err => {
-         console.error('Failed');
-         console.error(err);
-      });
-
-   useAuth0()
-      .getIdTokenClaims()
-      .then(res2 => {
-         console.log('here');
-         console.log(`Id Token Claims Below`);
-         console.log(res2);
-      })
-      .catch(err => {
-         console.error('Failed 2');
+         console.error('Failed to get token');
          console.error(err);
       });
 
@@ -101,20 +123,26 @@ export default function UserData() {
                productive
             </Typography>
          </Box>
-         <Box mt={2} mx={4}>
-            <Button
-               onClick={() => {}}
-               style={{
-                  margin: 'auto',
-                  color: 'black',
-                  height: '3rem',
-                  width: '12rem',
-                  border: '1px solid gray',
-               }}
-            >
-               Click here to be productive
-            </Button>
-         </Box>
+         {!getProductivityLoading ? (
+            <Box mt={2} mx={4}>
+               <Button
+                  onClick={() => {
+                     setProductivity(productivity + 1);
+                  }}
+                  style={{
+                     margin: 'auto',
+                     color: 'black',
+                     height: '3rem',
+                     width: '12rem',
+                     border: '1px solid gray',
+                  }}
+               >
+                  Click here to be productive
+               </Button>
+            </Box>
+         ) : (
+            <></>
+         )}
          <Box
             mt={2}
             mx={4}
