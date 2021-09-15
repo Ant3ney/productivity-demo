@@ -17,6 +17,10 @@ let mongoose = require('mongoose');
 require('dotenv').config();
 //#region Server config
 
+console.log(
+   `Server info\nServer Orgin: ${process.env.SERVER_ORGIN}\nClient Orgin: ${process.env.CLIENT_ORGIN}`
+);
+
 let { Google } = ThirdPartyEmailPassword;
 supertokens.init({
    framework: 'express',
