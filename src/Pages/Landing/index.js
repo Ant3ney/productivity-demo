@@ -8,7 +8,10 @@ import {
    Container,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+
 export default function LandingPage() {
+   const { loginWithRedirect } = useAuth0();
    return (
       <div className='landing-container'>
          <img className='niceBg' src={niceBg} />
@@ -27,10 +30,9 @@ export default function LandingPage() {
                      width: '12rem',
                      border: '1px solid gray',
                   }}
+                  onClick={() => loginWithRedirect()}
                >
-                  <Link className='action' to='/productivity'>
-                     Get Started
-                  </Link>
+                  Get Started
                </Button>
             </Box>
          </div>

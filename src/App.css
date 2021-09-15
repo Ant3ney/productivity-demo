@@ -67,6 +67,10 @@ a {
    color: white;
 }
 
+a:hover {
+   cursor: pointer;
+}
+
 .navbar {
    background-color: #2d3047 !important;
    color: white !important;
