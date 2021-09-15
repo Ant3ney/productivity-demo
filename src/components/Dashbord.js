@@ -4,6 +4,13 @@ import Dashbord from './Material/Dashboard';
 import { Box, Typography, Button, CircularProgress } from '@material-ui/core';
 import getWebOrgins from '../utilities/getWebOrgins';
 import { useAuth0 } from '@auth0/auth0-react';
+import {
+   BrowserRouter as Router,
+   Switch,
+   Route,
+   Link,
+   Redirect,
+} from 'react-router-dom';
 
 export default function UserData() {
    let [productivity, setProductivity] = useState(null);
@@ -53,12 +60,6 @@ export default function UserData() {
          console.error('Failed 2');
          console.error(err);
       });
-   /*  useAuth0()
-      .buildAuthorizeUrl()
-      .then(res => {
-         console.log(res);
-      })
-      .catch(); */
 
    function ProductivitySaveDisplay() {
       if (productivitySave === 'Updating Server') {
@@ -75,22 +76,24 @@ export default function UserData() {
          ? 'Loading user info'
          : `Logged in with ${user.email}`;
 
+   if (isLoading) {
+      return (
+         <Box mt={2} mx={4}>
+            <Typography component='p' variant='h5' color='primary'>
+               Loading user info
+            </Typography>
+         </Box>
+      );
+   } else if (!isAuthenticated) {
+      console.log('You must sign up first');
+      return <Redirect to='/' />;
+   }
    return (
       <div className='user-data-container'>
          <Box mt={2} mx={4}>
             <Typography component='p' variant='h5' color='primary'>
                {text}
             </Typography>
-         </Box>
-         <Box mt={2} mx={4}>
-            <div>
-               <h3>User Metadata</h3>
-               {userMetadata ? (
-                  <pre>{JSON.stringify(userMetadata, null, 2)}</pre>
-               ) : (
-                  'No user metadata defined'
-               )}
-            </div>
          </Box>
          <Box mt={2} mx={4}>
             <Typography component='p' variant='h6' color='primary'>
